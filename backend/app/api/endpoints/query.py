@@ -74,5 +74,8 @@ async def process_query(request: QueryRequest, api_key: str = None):
         logger.error(f"Value Error during query: {str(ve)}")
         raise HTTPException(status_code=400, detail=str(ve))
     except Exception as e:
+        import traceback
+        with open("error_log.txt", "w") as f:
+            f.write(traceback.format_exc())
         logger.error(f"Server Error during query: {str(e)}")
-        raise HTTPException(status_code=500, detail="Internal Server Error during LLM processing.")
+        raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")

@@ -43,7 +43,6 @@ class LLMService:
                     model=model_name,
                     google_api_key=api_key,
                     temperature=0.1,
-                    convert_system_message_to_human=True,
                 )
             
             messages = [
@@ -86,7 +85,7 @@ class LLMService:
                 raise ValueError("API Quota Exhausted. Update billing or key.")
             elif "429" in error_str:
                 raise ValueError("Rate limit exceeded. Please wait and try again.")
-            elif "API_KEY_INVALID" in error_str or "401" in error_str:
-                raise ValueError("Unauthorized: Invalid API key.")
+            elif "api_key_invalid" in error_str or "401" in error_str or "api key not valid" in error_str:
+                raise ValueError("Unauthorized: Invalid API key. Please check your Settings.")
             else:
                 raise RuntimeError(f"LLM Provider Error: {str(e)}")
